@@ -13,7 +13,7 @@ inject_into_file 'app/models/post.rb', %q{
   belongs_to :category
   belongs_to :author, :class_name => 'User'
   accepts_nested_attributes_for :author
-  attr_accessible :author if Rails::VERSION::STRING >= '3.2'
+  attr_accessible :author if Rails::VERSION::MAJOR == 3 && Rails::VERSION::MINOR == 2
 }, :after => 'class Post < ActiveRecord::Base'
 copy_file File.expand_path('../templates/post_decorator.rb', __FILE__), "app/models/post_decorator.rb"
 
@@ -67,7 +67,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 # we need this routing path, named "logout_path", for testing
 route %q{
   devise_scope :user do
-    match '/admin/logout' => 'active_admin/devise/sessions#destroy', :as => :logout
+    delete '/admin/logout' => 'active_admin/devise/sessions#destroy', :as => :logout
   end
 }
 

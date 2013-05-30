@@ -69,6 +69,12 @@ ActiveAdmin.after_load do |app|
               end
             end
           end
+
+          if Rails::VERSION::MAJOR == 4
+            def permitted_params
+              params.permit(:active_admin_comment => [:resource_type, :resource_id, :resource_type, :body, :namespace])
+            end
+          end
         end
 
         index do

@@ -41,6 +41,10 @@ RSpec.configure do |c|
   def rails_3_2?
     ::Rails::VERSION::MAJOR == 3 && ::Rails::VERSION::MINOR == 2
   end
+
+  def rails_4_0?
+    ::Rails::VERSION::MAJOR == 4 && ::Rails::VERSION::MINOR == 0
+  end
 end
 
 # Ensure this is defined for Ruby 1.8

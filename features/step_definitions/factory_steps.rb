@@ -1,6 +1,11 @@
 def create_user(name, type = 'User')
-  type.camelize.constantize.
-    find_or_create_by_first_name_and_last_name *name.split(' '), :username => name.gsub(' ', '').underscore
+  model = type.camelize.constantize
+  first_name, last_name = name.split(' ')
+  user = if Rails::VERSION::MAJOR == 4
+    model.where(:first_name => first_name, :last_name => last_name).first_or_create(:username => name.gsub(' ', '').underscore)
+  else
+    model.find_or_create_by_first_name_and_last_name first_name, last_name, :username => name.gsub(' ', '').underscore
+  end
 end
 
 Given /^(a|\d+)( published)? posts?(?: with the title "([^"]*)")?(?: and body "([^"]*)")?(?: written by "([^"]*)")? exists?$/ do |count, published, title, body, user|

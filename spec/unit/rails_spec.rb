@@ -23,13 +23,13 @@ describe ActiveAdmin do
       end
 
       it "should be false without asset pipeline enabled" do
-        assets = mock(:enabled => false)
+        assets = mock(:compile => false)
         Rails.application.config.stub!(:assets => assets)
         ActiveAdmin.use_asset_pipeline?.should be_false
       end
 
       it "should be true with asset pipeline enabled" do
-        assets = mock(:enabled => true)
+        assets = mock(:compile => true)
         Rails.application.config.stub!(:assets => assets)
         ActiveAdmin.use_asset_pipeline?.should be_true
       end

@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'ostruct'
 
 describe ActiveAdmin::Views::Pages::Show do
 

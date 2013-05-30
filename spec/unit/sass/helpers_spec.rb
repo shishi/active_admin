@@ -15,7 +15,7 @@ describe ActiveAdmin::Sass::Helpers do
     end
 
     it "should generate an image asset path to /images/active_admin" do
-      assets = mock(:enabled => false)
+      assets = mock(:compile => false)
       Rails.application.config.stub!(:assets => assets)
       active_admin_image_path(Sass::Script::String.new('test.jpg')).should ==
           Sass::Script::String.new("/images/active_admin/test.jpg", true)
@@ -33,9 +33,13 @@ describe ActiveAdmin::Sass::Helpers do
     end
 
     it "should call the sass-rails asset helper" do
-      assets = mock(:enabled => true)
+      assets = mock(:compile => true)
       Rails.application.config.stub!(:assets => assets)
-      self.should_receive(:asset_path).with(Sass::Script::String.new("active_admin/test.jpg"), Sass::Script::String.new('image'))
+      if rails_4_0?
+        self.should_receive(:asset_path).with(Sass::Script::String.new("active_admin/test.jpg"))
+      else
+        self.should_receive(:asset_path).with(Sass::Script::String.new("active_admin/test.jpg"), Sass::Script::String.new('image'))
+      end
       active_admin_image_path(::Sass::Script::String.new('test.jpg'))
     end
 

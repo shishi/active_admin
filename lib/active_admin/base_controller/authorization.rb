@@ -133,8 +133,10 @@ module ActiveAdmin
         respond_to do |format|
           format.html do
             flash[:error] = error_message
+            request_headers = request.headers
+            request_headers = request_headers.keys if request_headers.respond_to?(:keys)
 
-            if request.headers.keys.include?("HTTP_REFERER")
+            if request_headers.include?("HTTP_REFERER")
               redirect_to :back
             else
               controller, action = active_admin_namespace.root_to.split("#")

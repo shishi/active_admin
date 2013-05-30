@@ -6,7 +6,11 @@ module ActiveAdmin
   module Sass
     module Helpers
 
-      include ::Sass::Rails::Helpers
+      if Rails::VERSION::MAJOR == 4
+        include Sprockets::SassFunctions
+      else
+        include ::Sass::Rails::Helpers
+      end
 
       # Provides a helper in SASS to ensure that the paths to image
       # assets are always correct across Rails versions.
@@ -19,7 +23,7 @@ module ActiveAdmin
       #
       #   background: url("/images/active_admin/some_image.png") 0 0 repeat-x;
       #
-      # Or in Rails 3.1 with asset pipeline enebaled:
+      # Or in Rails 3.1 with asset pipeline enabled:
       #
       #   background: url("/assets/active_admin/some_image.png") 0 0 repeat-x;
       #
@@ -29,7 +33,11 @@ module ActiveAdmin
       #
       def active_admin_image_path(asset)
         if ActiveAdmin.use_asset_pipeline?
-          asset_path(::Sass::Script::String.new("active_admin/#{asset.value}"), ::Sass::Script::String.new('image'))
+          if Rails::VERSION::MAJOR == 4
+            asset_path(::Sass::Script::String.new("active_admin/#{asset.value}"))
+          else
+            asset_path(::Sass::Script::String.new("active_admin/#{asset.value}"), ::Sass::Script::String.new('image'))
+          end
         else
           ::Sass::Script::String.new("/images/active_admin/#{asset.value}", true)
         end
